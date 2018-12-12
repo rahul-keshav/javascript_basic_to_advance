@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>objects</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <script src="main.js"></script>
+</head>
+<body>
+    
+    <script>
+        var john = {
+            name :'john',
+            lastName :'Doe',
+            yearOfBirth :1990,
+            isMarried :false,
+            calculateAge:function(current_age){
+                
+                return current_age-this.yearOfBirth
+            }
+
+        };
+        console.log(john);
+        console.log(john.name)
+        console.log(john.isMarried)
+
+
+        var jane = new Object;
+        jane.name='jane';
+        jane.lastName='smith'
+        jane.yearOfBirth=1999
+        jane.isMarried=false;
+
+        console.log(jane.name)
+
+        console.log(john.calculateAge(2018))
+        </script>
+</body>
+</html>
