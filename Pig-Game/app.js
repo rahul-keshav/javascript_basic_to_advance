@@ -10,11 +10,10 @@ GAME RULES:
 */
 
 
-var scores, roundScores, activePlayer ;
+var scores, roundScores, activePlayer,gamePlaying ;
 
-scores=[0,0];
-activePlayer = 0;
-roundScores = 0;
+init();
+
 
 function hold(){
     // if(activePlayer===0)
@@ -28,32 +27,25 @@ function hold(){
     // }   
     
     // we can use ternary operater:
+    scores[activePlayer] += roundScores;
+    document.getElementById('score-'+activePlayer).textContent=scores[activePlayer];
     activePlayer === 0 ? activePlayer = 1 : activePlayer = 0;
     document.querySelector('.player-0-panel').classList.toggle('active');
     document.querySelector('.player-1-panel').classList.toggle('active');
     document.querySelector('.dice').style.display='none';
 
-    scores[activePlayer]+=roundScores;
+    
+    
+    console.log(scores);
     
 
-    
-    console.log(scores[0]);
-    console.log(scores[1]);
     roundScores=0;
 }
 
 
-
-document.querySelector('.dice').style.display = 'none';
-document.getElementById('score-0').textContent = '0';
-document.getElementById('score-1').textContent = '0';
-document.getElementById('current-0').textContent = '0';
-document.getElementById('current-1').textContent = '0';
-
-
 document.querySelector('.btn-roll').addEventListener('click',function(){
-
-    // 1. random number
+    if(gamePlaying){
+        // 1. random number
     var dice = Math.floor(Math.random()*6)+1
 
     // 2. display the result 
@@ -66,6 +58,21 @@ document.querySelector('.btn-roll').addEventListener('click',function(){
             // add score
             roundScores += dice; 
             document.querySelector('#current-'+activePlayer).textContent = roundScores;  
+            // if the winner wins then UI changes...
+            if((scores[activePlayer]+roundScores)>=10){
+                document.getElementById('name-'+activePlayer).textContent= 'WINNER!!!';
+                scores[activePlayer] += roundScores;
+                document.getElementById('score-'+activePlayer).textContent=scores[activePlayer];
+                document.querySelector('.dice').style.display='none';
+
+                document.querySelector('.player-'+activePlayer+'-panel').classList.add('winner');
+                document.querySelector('.player-'+activePlayer+'-panel').classList.remove('active');
+
+                document.querySelector('.btn-roll').style.display='none';
+                document.querySelector('.btn-hold').style.display='none';
+
+                gamePlaying=false;
+            }
         }
         else{
             // current = 0
@@ -77,26 +84,60 @@ document.querySelector('.btn-roll').addEventListener('click',function(){
             // document.querySelector('.player-0-panel').classList.toggle('active');
             // document.querySelector('.player-1-panel').classList.toggle('active');
             
-        }   
+        } 
+
+    }
+    
+         
 }
 )
-document.querySelector('.btn-hold').addEventListener('click',function(){
-        
-        // add current score to the global scores
-        
-        hold();
-
-
-        // update the UI;
-
-
-        // check if the player won the game;
+document.querySelector('.btn-hold').addEventListener('click',function(){       
+        if(gamePlaying){
+            hold();
+        } 
+});
 
 
 
+document.querySelector('.btn-new').addEventListener('click',init);
 
 
-})
+
+function init(){
+    scores=[0,0];
+    activePlayer = 0;
+    roundScores = 0;
+    gamePlaying =true;
+
+    document.querySelector('.dice').style.display = 'none';
+    document.getElementById('score-0').textContent = '0';
+    document.getElementById('score-1').textContent = '0';
+    document.getElementById('current-0').textContent = '0';
+    document.getElementById('current-1').textContent = '0';
+
+    document.getElementById('name-0').textContent='Player 1';
+    document.getElementById('name-1').textContent='Player 2';
+
+    document.querySelector('.player-0-panel').classList.remove('winner');
+    document.querySelector('.player-1-panel').classList.remove('winner');
+
+    document.querySelector('.player-0-panel').classList.remove('active');
+    document.querySelector('.player-1-panel').classList.remove('active');
+
+    // we can add do one thing that without removing the active class
+    //  from panel-1(line no 122) and let the panel-1 active, but never do that
+    // because extra active classes will get added to the panel one on that time
+    // our code will start misbehaving..
+    // and we will never know the why behind that...
+    // 
+    document.querySelector('.player-0-panel').classList.add('active');
+
+    document.querySelector('.btn-roll').style.display='block';
+    document.querySelector('.btn-hold').style.display='block';
+
+    
+
+}
 // console.log(dice)
 // document.querySelector('#current-'+activePlayer).textContent = dice;
 
