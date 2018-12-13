@@ -59,7 +59,7 @@ document.querySelector('.btn-roll').addEventListener('click',function(){
             roundScores += dice; 
             document.querySelector('#current-'+activePlayer).textContent = roundScores;  
             // if the winner wins then UI changes...
-            if((scores[activePlayer]+roundScores)>=10){
+            if((scores[activePlayer]+roundScores)>=100){
                 document.getElementById('name-'+activePlayer).textContent= 'WINNER!!!';
                 scores[activePlayer] += roundScores;
                 document.getElementById('score-'+activePlayer).textContent=scores[activePlayer];
